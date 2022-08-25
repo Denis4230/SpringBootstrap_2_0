@@ -37,12 +37,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    public User saveUser(User user, String[] roles){
-        Set<Role> roleSet = Arrays.stream(roles)
-                .map(Role::new)
-                .collect(Collectors.toSet());
+    public User saveUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(roleSet);
+
         return userRepository.save(user);
     }
 

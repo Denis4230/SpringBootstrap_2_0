@@ -12,7 +12,7 @@
     <form class="form-inline">
         <strong><span class="navbar-text text-white" th:text="${user.getUsername()}"}></span></strong>
         <span class="navbar-text text-white">&nbsp with roles: &nbsp</span>
-        <span class="navbar-text text-white"><a th:text="${user.getRoles()}+' '"></a> </span>
+        <span class="navbar-text text-white" th:each="role : ${user.getRoles()}" th:text="${role} + '&nbsp'"  > </span>
     </form>
     <ul class="navbar-nav float-lg-end">
         <li class="nav-item">
@@ -70,9 +70,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Username</th>
+                                    <th>Age</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
-                                    <th>Email</th>
                                     <th>Roles</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
@@ -82,10 +82,10 @@
                                 <tr th:each="user : ${userList}">
                                     <td th:text="${user.getId()}"></td>
                                     <td th:text="${user.getUsername()}"></td>
+                                    <td th:text="${user.getAge()}"></td>
                                     <td th:text="${user.getFirstName()}"></td>
                                     <td th:text="${user.getLastName()}"></td>
-                                    <td th:text="${user.getEmail()}"></td>
-                                    <td th:text="${user.getRoles()}"></td>
+                                    <td><a th:each="role : ${user.getRoles()}" th:text="${role} + '&nbsp'"></a></td>
 
                                     <td>
                                         <!-- Кнопка редактирования -->
@@ -131,6 +131,12 @@
                                                                        th:value="null" id="ePassword" name="password">
                                                                 <br />
 
+                                                                <strong><label for="eAge">Age: </label></strong>
+                                                                <br />
+                                                                <input type="text" class="form-control"
+                                                                       th:value="${user.age}" id="eAge" name="age">
+                                                                <br />
+
                                                                 <strong><label for="eName">First Name: </label></strong>
                                                                 <br />
                                                                 <input type="text" class="form-control"
@@ -145,15 +151,8 @@
                                                                        required minlength="3" maxlength="50">
                                                                 <br />
 
-                                                                <strong><label for="eEmail">Email: </label></strong>
-                                                                <br />
-                                                                <input type="text" class="form-control"
-                                                                       th:value="${user.getEmail()}" id="eEmail" name="email"
-                                                                       required minlength="3" maxlength="50">
-                                                                <br />
 
-                                                                <select multiple class="form-control w-100"
-                                                                        id="role" name="role">
+                                                                <select multiple class="form-control w-100" id="editRoles" name="roles">
                                                                     <option value="ROLE_ADMIN">ADMIN</option>
                                                                     <option value="ROLE_USER">USER</option>
                                                                 </select>
@@ -210,27 +209,28 @@
                                                                        th:value="${user.getUsername()}" id="dUsername" name="username" readonly>
                                                                 <br />
 
+                                                                <strong><label for="dAge">Age: </label></strong>
+                                                                <br />
+                                                                <input type="text" class="form-control"
+                                                                       th:value="${user.getAge()}" id="dAge" name="age" readonly>
+                                                                <br />
+
                                                                 <strong><label for="dName">First Name: </label></strong>
                                                                 <br />
                                                                 <input type="text" class="form-control"
-                                                                       th:value="${user.getFirstName()}" id="dName" name="name" readonly>
+                                                                       th:value="${user.getFirstName()}" id="dName" name="firstName" readonly>
+                                                                <br />
 
                                                                 <strong><label for="dLastname">Last Name: </label></strong>
                                                                 <br />
                                                                 <input type="text" class="form-control"
-                                                                       th:value="${user.getLastName()}" id="dLastname" name="lastname" readonly>
-                                                                <br />
-
-                                                                <strong><label for="dEmail">Email: </label></strong>
-                                                                <br />
-                                                                <input type="text" class="form-control"
-                                                                       th:value="${user.getEmail()}" id="dEmail" name="email" readonly>
+                                                                       th:value="${user.getLastName()}" id="dLastname" name="lastName" readonly>
                                                                 <br />
 
                                                                 <select multiple class="form-control w-100" id="dRoles" name="roles" readonly>
                                                                     <option
                                                                             th:each="role : ${user.roles}"
-                                                                            th:text="${role.getRole()}">
+                                                                            th:text="${role}">
                                                                     </option>
                                                                 </select>
 
@@ -280,16 +280,25 @@
                                     <div class="col-sm-3">
                                         <strong><label for="nPassword">Password: </label></strong>
                                         <br />
-                                        <input type="password" class="form-control" th:field="*{password}" id="nPassword"
+                                        <input type="text" class="form-control" th:field="*{password}" id="nPassword"
                                                placeholder="Password" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group row justify-content-center align-items-center">
                                     <div class="col-sm-3">
-                                        <strong><label for="nName">First Name: </label></strong>
+                                        <strong><label for="nAge">Age: </label></strong>
                                         <br />
-                                        <input type="text" class="form-control" th:field="*{firstName}" id="nName"
+                                        <input type="text" class="form-control" th:field="*{age}" id="nAge"
+                                               placeholder="Age">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row justify-content-center align-items-center">
+                                    <div class="col-sm-3">
+                                        <strong><label for="nFirstName">First Name: </label></strong>
+                                        <br />
+                                        <input type="text" class="form-control" th:field="*{firstName}" id="nFirstName"
                                                placeholder="Name" required minlength="3" maxlength="50">
                                     </div>
                                 </div>
@@ -303,19 +312,12 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row justify-content-center align-items-center">
-                                    <div class="col-sm-3">
-                                        <strong><label for="nEmail">Email: </label></strong>
-                                        <br />
-                                        <input type="text" class="form-control" th:field="*{email}" id="nEmail"
-                                               placeholder="Email" required minlength="3" maxlength="50">
-                                    </div>
-                                </div>
+
 
                                 <div class="form-group row justify-content-center align-items-center">
                                     <div class="col-sm-3">
                                         <label for="roles">Select roles: </label>
-                                        <select multiple class="form-control w-100" id="roles" name="role">
+                                        <select multiple class="form-control w-100" id="roles" name="roles">
                                             <option value="ROLE_ADMIN">ADMIN</option>
                                             <option value="ROLE_USER">USER</option>
                                         </select>

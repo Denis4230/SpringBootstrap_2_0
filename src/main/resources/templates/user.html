@@ -14,7 +14,7 @@
         <form class="form-inline">
             <strong><span class="navbar-text text-white" th:text="${user.getUsername()}"}></span></strong>
             <span class="navbar-text text-white">&nbsp with roles: &nbsp</span>
-            <span class="navbar-text text-white"><a th:text="${user.getRoles()}+' '"></a></span>
+            <span class="navbar-text text-white"><a th:each="role : ${user.getRoles()}" th:text="${role} + '&nbsp'"></a></span>
         </form>
         <ul class="navbar-nav float-lg-end">
             <li class="nav-item">
@@ -57,9 +57,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Username</th>
+                                    <th>Age</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
-                                    <th>Email</th>
                                     <th>Roles</th>
                                 </tr>
                                 </thead>
@@ -67,10 +67,10 @@
                                 <tr>
                                     <td th:text="${user.getId()}"></td>
                                     <td th:text="${user.getUsername()}"></td>
+                                    <td th:text="${user.getAge()}"></td>
                                     <td th:text="${user.getFirstName()}"></td>
                                     <td th:text="${user.getLastName()}"></td>
-                                    <td th:text="${user.getEmail()}"></td>
-                                    <td><a th:each="role : ${user.getRoles()}" th:text="${role.role} + ' '"></a></td>
+                                    <td><a th:each="role : ${user.getRoles()}" th:text="${role} + '&nbsp'"></a></td>
                                 </tr>
                                 </tbody>
                             </table>
