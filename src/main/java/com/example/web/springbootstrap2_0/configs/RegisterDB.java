@@ -12,14 +12,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class Register {
+public class RegisterDB {
 
     private final RoleService roleService;
 
     private final UserService userService;
 
     @Autowired
-    public Register(RoleService roleService, UserService userService) {
+    public RegisterDB(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
     }
